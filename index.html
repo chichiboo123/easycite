@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>출처표기, 걱정마!</title>
+    <style>
+        body {
+            text-align: center;
+            font-family: 'Orbit', Arial, sans-serif;
+        }
+        h1 {
+            margin-top: 50px;
+        }
+        .button-container {
+            margin-top: 30px;
+            display: flex; /* 버튼을 가로로 배치하기 위해 Flexbox 레이아웃 사용 */
+            justify-content: center; /* 버튼 가운데 정렬 */
+            flex-wrap: wrap; /* 버튼이 너무 많으면 줄 바꿈 */
+        }
+        .button {
+            display: inline-block;
+            width: 100px;
+            height: 50px;
+            margin: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #fff;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .button-book {
+            background-color: #86c1b9;
+        }
+        .button-website {
+            background-color: #f6ae2d;
+        }
+        .button-news {
+            background-color: #f99494;
+        }
+        .input-container {
+            margin-top: 30px;
+            display: none;
+        }
+        .input-container label {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .input-container input[type="text"] {
+            width: 300px;
+            padding: 5px;
+            margin-top: 5px;
+            margin-bottom: 10px;
+        }
+        .input-container .optional-text {
+            font-size: 16px;
+            color: #888;
+            text-align: center;
+        }
+        .input-container .optional-text.left-align {
+            text-align: left;
+            color: #000;
+        }
+        .input-container button {
+            margin-top: 20px;
+        }
+        #output {
+            margin-top: 30px;
+            display: none;
+        }
+        #output p {
+            font-weight: bold;
+        }
+        .button-copy {
+            margin-top: 20px;
+            padding: 10px 15px;
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .button-reset {
+            margin-top: 20px;
+            padding: 10px 15px;
+            background-color: #81BEF7;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .footer {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            background-color: #f9f9f9;
+            padding: 10px;
+            font-size: 14px;
+            color: #555;
+            text-align: center;
+        }
+
+        /* Responsive Styles */
+        @media screen and (max-width: 480px) {
+            h1 {
+                font-size: 24px;
+                margin-top: 30px;
+            }
+            .button {
+                width: 80px;
+                height: 40px;
+                font-size: 14px;
+                margin: 5px;
+            }
+            .input-container input[type="text"] {
+                width: 220px;
+                padding: 3px;
+            }
+            .input-container button {
+                margin-top: 15px;
+            }
+            #output p {
+                font-size: 14px;
+            }
+            .button-copy,
+            .button-reset {
+                padding: 8px 12px;
+                font-size: 12px;
+            }
+            .footer {
+                font-size: 12px;
+            }
+
+            .button-reset {
+                display: inline-block;
+                margin-top: 0;
+                margin-left: 5px;
+            }
+        }
+    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbit&display=swap" rel="stylesheet">
+</head>
+<body>
+    <h1>출처표기, 걱정마!</h1>
+    <div class="button-container">
+        <button class="button button-book" onclick="showInput('book')">책</button>
+        <button class="button button-website" onclick="showInput('website')">웹사이트</button>
+        <button class="button button-news" onclick="showInput('news')">신문기사</button>
+    </div>
+    <div class="input-container" id="book-input">
+        <label for="book-title">제목:</label><br>
+        <input type="text" id="book-title"><br>
+        <label for="book-author">저자:</label><br>
+        <input type="text" id="book-author"><br>
+        <label for="book-publisher">출판사:</label><br>
+        <input type="text" id="book-publisher"><br>
+        <label for="book-year">출판년도:</label><br>
+        <input type="text" id="book-year"><br>
+        <label for="book-page" class="optional-text left-align">
+            <span style="font-size: 16px;">참고한 페이지 (숫자만 적어요):</span><br>
+            <input type="text" id="book-page" class="optional-text left-align" placeholder="(선택 입력)" onclick="this.style.textAlign='left'; this.style.color='black';">
+        </label><br>
+        <button onclick="generateSource('book')">만들기</button>
+    </div>
+    <div class="input-container" id="website-input">
+        <label for="website-title">사이트명:</label><br>
+        <input type="text" id="website-title"><br>
+        <label for="website-url">URL:</label><br>
+        <input type="text" id="website-url"><br>
+        <label for="website-accessed">접속한 날짜:</label><br>
+        <input type="text" id="website-accessed"><br>
+        <button onclick="generateSource('website')">만들기</button>
+    </div>
+    <div class="input-container" id="news-input">
+        <label for="news-reporter">기자 이름:</label><br>
+        <input type="text" id="news-reporter"><br>
+        <label for="news-date">게시 일자:</label><br>
+        <input type="text" id="news-date"><br>
+        <label for="news-title">제목:</label><br>
+        <input type="text" id="news-title"><br>
+        <label for="news-newspaper">신문사명:</label><br>
+        <input type="text" id="news-newspaper"><br>
+        <button onclick="generateSource('news')">만들기</button>
+    </div>
+    <div id="output">
+        <p id="output-text"></p>
+        <button class="button-copy" onclick="copySource()">복사하기</button>
+        <button class="button-reset" onclick="resetPage()">처음으로</button>
+    </div>
+
+    <div class="footer">
+        <p id="footer-text">Created by. <a href="https://litt.ly/chichiboo" target="_blank">교육뮤지컬 꿈꾸는 치수쌤</a></p>
+    </div>
+
+    <script>
+        var currentInput = "";
+        var outputGenerated = false;
+
+        function showInput(input) {
+            hideInputs();
+            document.getElementById(input + "-input").style.display = "block";
+            currentInput = input;
+            document.querySelector("#output .button-reset").style.display = "inline-block";
+
+            if (outputGenerated) {
+                document.getElementById("output-text").innerText = "";
+                document.getElementById("output").style.display = "none";
+                outputGenerated = false;
+            }
+        }
+
+        function hideInputs() {
+            var inputs = document.getElementsByClassName("input-container");
+            for (var i = 0; i < inputs.length; i++) {
+                inputs[i].style.display = "none";
+            }
+        }
+
+        function generateSource(input) {
+            var outputText = "";
+            if (input === "book") {
+                var title = document.getElementById("book-title").value;
+                var author = document.getElementById("book-author").value;
+                var publisher = document.getElementById("book-publisher").value;
+                var year = document.getElementById("book-year").value;
+                var page = document.getElementById("book-page").value;
+
+                outputText = author + ". (" + year + "). " + title + ". " + publisher;
+                if (page !== "") {
+                    outputText += ", p." + page;
+                }
+                outputText += ".";
+            } else if (input === "website") {
+                var title = document.getElementById("website-title").value;
+                var url = document.getElementById("website-url").value;
+                var accessed = document.getElementById("website-accessed").value;
+
+                outputText = title + ". (접속한 날짜: " + accessed + "). " + url + ".";
+            } else if (input === "news") {
+                var reporter = document.getElementById("news-reporter").value;
+                var date = document.getElementById("news-date").value;
+                var title = document.getElementById("news-title").value;
+                var newspaper = document.getElementById("news-newspaper").value;
+
+                outputText = reporter + ". (" + date + "). " + title + ". " + newspaper + ".";
+            }
+
+            document.getElementById("output-text").innerText = outputText;
+            document.getElementById("output").style.display = "block";
+            outputGenerated = true;
+
+            var footerText = "Created by. <a href='https://litt.ly/chichiboo' target='_blank'>교육뮤지컬 꿈꾸는 치수쌤</a>";
+            document.getElementById("footer-text").innerHTML = footerText;
+
+            // Show the reset button next to the copy button
+            document.querySelector("#output .button-reset").style.display = "inline-block";
+        }
+
+        function copySource() {
+            var outputText = document.getElementById("output-text").innerText;
+            navigator.clipboard.writeText(outputText);
+            alert("출처가 복사되었습니다!");
+        }
+
+        function resetPage() {
+            var inputs = document.querySelectorAll(".input-container input[type='text']");
+            for (var i = 0; i < inputs.length; i++) {
+                inputs[i].value = "";
+            }
+            document.getElementById("output").style.display = "none";
+            hideInputs();
+            currentInput = "";
+            document.querySelector("#output .button-reset").style.display = "none";
+        }
+    </script>
+</body>
+</html>
